@@ -154,36 +154,41 @@ add_definitions(-DVSOMEIP_INTERNAL_SUPPRESS_DEPRECATED)
 # Dependencies
 ################################################################################
 
-# Threads
-find_package(Threads REQUIRED)
+# # Threads
+# find_package(Threads REQUIRED)
 
-# Boost
-find_package( Boost 1.55 COMPONENTS system thread filesystem REQUIRED )
-if(${CMAKE_SYSTEM_NAME} MATCHES "QNX")
-    include_directories(${Boost_INCLUDE_DIR} )
-else()
-    include_directories(SYSTEM ${Boost_INCLUDE_DIR} )
-endif()
+# # Boost
+# find_package( Boost 1.55 COMPONENTS system thread filesystem REQUIRED )
+# if(${CMAKE_SYSTEM_NAME} MATCHES "QNX")
+#     include_directories(${Boost_INCLUDE_DIR} )
+# else()
+#     include_directories(SYSTEM ${Boost_INCLUDE_DIR} )
+# endif()
 
-if(Boost_FOUND)
-  if(Boost_LIBRARY_DIR)
-    MESSAGE( STATUS "Boost_LIBRARY_DIR not empty using it: ${Boost_LIBRARY_DIR}" )
-  else()
-    if(BOOST_LIBRARYDIR)
-      MESSAGE( STATUS "Boost_LIBRARY_DIR empty but BOOST_LIBRARYDIR is set setting Boost_LIBRARY_DIR to: ${BOOST_LIBRARYDIR}" )
-      set(Boost_LIBRARY_DIR ${BOOST_LIBRARYDIR})
-    endif()
-  endif()
-else()
-  MESSAGE( STATUS "Boost was not found!")
-endif()
+# if(Boost_FOUND)
+#   if(Boost_LIBRARY_DIR)
+#     MESSAGE( STATUS "Boost_LIBRARY_DIR not empty using it: ${Boost_LIBRARY_DIR}" )
+#   else()
+#     if(BOOST_LIBRARYDIR)
+#       MESSAGE( STATUS "Boost_LIBRARY_DIR empty but BOOST_LIBRARYDIR is set setting Boost_LIBRARY_DIR to: ${BOOST_LIBRARYDIR}" )
+#       set(Boost_LIBRARY_DIR ${BOOST_LIBRARYDIR})
+#     endif()
+#   endif()
+# else()
+#   MESSAGE( STATUS "Boost was not found!")
+# endif()
+# CMAKE MODULES
+set(CMAKE_MODULE_PATH APPEND "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+include(GetPackages)
+string(REPLACE "." "0" Boost_VERSION_MACRO ${BOOST_VERSION})
 # cmake 3.15 introduced a new variable and a new format for the old one
 if (DEFINED Boost_VERSION_MACRO)
   set(VSOMEIP_BOOST_VERSION ${Boost_VERSION_MACRO})
 else()
   set(VSOMEIP_BOOST_VERSION ${Boost_VERSION})
 endif()
+
 
 message( STATUS "Using boost version: ${VSOMEIP_BOOST_VERSION}" )
 
@@ -640,7 +645,7 @@ endif()
 ##############################################################################
 # build routing manager daemon (Non-Windows only)
 if (NOT MSVC)
-add_subdirectory( examples/routingmanagerd )
+# add_subdirectory( examples/routingmanagerd )
 endif()
 
 # build tools
